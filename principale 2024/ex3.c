@@ -58,7 +58,6 @@ int NRond(int M)
     int N = 1;
     while (P <= RacineN(M, N + 1))
     {
-        printf("%lf \n", RacineN(M, N));
         N++;
     }
     if (N == 1)
