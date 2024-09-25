@@ -1,3 +1,4 @@
+#include <ctype.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -39,9 +40,14 @@ bool Triangulaire(int Nb) {
     while (N * (N + 1) / 2 < Nb) N++;
     return (N * (N + 1) / 2 == Nb);
 };
-int Calcul_Score(char *ch) {
+int Calcul_Score(char *ch) {  // Saber -> 45
     int s = 0;
-    for (; *ch != '\0'; ch++) s = s + (int)*ch - 64;
+    char *k = ch;
+    for (; *k != '\0'; k++) {
+        s = s + (int)(toupper((char)*k)) - 64;
+    }
+    printf("name  = %s ", ch);
+    printf("score = %d  \n", s);
     return s;
 }
 
@@ -54,26 +60,32 @@ int Max_Score(struct Inv T[], int N) {
 void Affice_Gangnats(struct Inv T[], int N) {
     int Max = Max_Score(T, N);
     for (int i = 0; i < N; i++)
-        if (T[i].score = Max) printf("le gangnat est %s", T[i].nom);
+        if (T[i].score == Max) printf("le gangnat est %s", T[i].nom);
 }
-void TransfertNoms(struct Inv T[], int N) {
+void TransfertNoms(struct Inv T[], int *N) {
     FILE *Finv = fopen("Invites.txt", "r");
+    FILE *Ftr = fopen("Triangulaire.dat", "wb");
+    *N = 0;
+
     while (!feof(Finv)) {
-        char *ret;
-        Lire_Ligne(Finv, &ret);
-        printf("%d ", strlen(ret));
-
         struct Inv E;
-        E.nom = ret;
+        Lire_Ligne(Finv, &E.nom);
         E.score = Calcul_Score(E.nom);
-
         if (Triangulaire(E.score)) {
+            T[*N] = E;
+            fwrite(&E, sizeof(E), 1, Ftr);
+            *N = *N + 1;
         }
-
-        printf("%s \n", E.nom, E.score);
-        free(ret);
     }
+    fclose(Ftr);
     fclose(Finv);
 }
 
-// * if file pointer exceeds EOF things start buggin
+void main() {
+    struct Inv T[50];
+    int N = 0;
+    TransfertNoms(T, &N);
+    Affice_Gangnats(T, N);
+}
+
+// pass an adress as a pointer -> it becomes a pointer 
