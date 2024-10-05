@@ -57,7 +57,7 @@ int Max_Score(struct Inv T[], int N) {
         if (T[i].score > Max) Max = T[i].score;
     return Max;
 };
-void Affice_Gangnats(struct Inv T[], int N) {
+void Affiche_Gangnats(struct Inv T[], int N) {
     int Max = Max_Score(T, N);
     for (int i = 0; i < N; i++)
         if (T[i].score == Max) printf("le gangnat est %s", T[i].nom);
@@ -80,12 +80,11 @@ void TransfertNoms(struct Inv T[], int *N) {
     fclose(Ftr);
     fclose(Finv);
 }
-
 void main() {
     struct Inv T[50];
     int N = 0;
     TransfertNoms(T, &N);
-    Affice_Gangnats(T, N);
+    Affiche_Gangnats(T, N);
 }
 
-// pass an adress as a pointer -> it becomes a pointer 
+// pass an adress as a pointer -> it becomes a pointer
